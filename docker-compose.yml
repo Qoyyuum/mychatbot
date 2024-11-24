@@ -2,6 +2,7 @@ version: '3'
 
 services:
   ollama:
+    container_name: ollama
     image: ollama/ollama:latest
     ports:
       - "11434:11434"
@@ -9,8 +10,13 @@ services:
       - OLLAMA_PORT=11434
 
   open-webui:
-    image: linuxserver/open-webui:latest
+    container_name: open-webui
+    image: ghcr.io/open-webui/open-webui:main
     depends_on:
       - ollama
     ports:
-      - "8080:80"
+      - "8080:8080"
+    restart: unless-stopped
+
+
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
