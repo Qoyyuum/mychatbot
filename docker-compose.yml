@@ -1,23 +1,33 @@
-version: '3'
-
 services:
-  ollama:
-    container_name: ollama
-    image: ollama/ollama:latest
-    ports:
-      - "11434:11434"
-    environment:
-      - OLLAMA_PORT=11434
-
-  open-webui:
-    container_name: open-webui
+  openWebUI:
     image: ghcr.io/open-webui/open-webui:main
-    depends_on:
-      - ollama
-    ports:
-      - "8080:8080"
+    container_name: mychatbot_openwebui
+    hostname: openwebui
+    # networks:
+    #   - traefik-net
     restart: unless-stopped
     volumes:
-      - ./open-webui-data:/app/backend/data
+      - ./open-webui-local:/app/backend/data
+    ports:
+      - "8080:8080"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.openwebui.rule=Host(`mychatbot.programmerqhome.dev`)"
+    #   - "traefik.http.routers.openwebui.entrypoints=https"
+    #   - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+    environment:
+      OLLAMA_BASE_URLS: http://ollama:11434
 
-docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: mychatbot_ollama
+    hostname: ollama
+    # networks:
+    #   - traefik-net
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama-local:/root/.ollama
+# networks:
+#   traefik-net:
+#     external: true
