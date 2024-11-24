@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - OLLAMA_PORT=3000
+
+  open-webui:
+    image: linuxserver/open-webui:latest
+    depends_on:
+      - ollama
+    ports:
+      - "8080:80"
