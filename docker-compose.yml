@@ -4,9 +4,9 @@ services:
   ollama:
     image: ollama/ollama:latest
     ports:
-      - "3000:3000"
+      - "11434:11434"
     environment:
-      - OLLAMA_PORT=3000
+      - OLLAMA_PORT=11434
 
   open-webui:
     image: linuxserver/open-webui:latest
