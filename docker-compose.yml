@@ -7,7 +7,7 @@ services:
     #   - traefik-net
     restart: unless-stopped
     volumes:
-      - ./open-webui-local:/app/backend/data
+      - ./open-webui-local:/app/backend/data:z
     ports:
       - "8080:8080"
     # labels:
@@ -27,7 +27,7 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - ./ollama-local:/root/.ollama
+      - ./ollama-local:/root/.ollama:z
 # networks:
 #   traefik-net:
 #     external: true
