@@ -3,18 +3,11 @@ services:
     image: ghcr.io/open-webui/open-webui:main
     container_name: mychatbot_openwebui
     hostname: openwebui
-    # networks:
-    #   - traefik-net
     restart: unless-stopped
     volumes:
       - ./open-webui-local:/app/backend/data:z
     ports:
       - "8080:8080"
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.openwebui.rule=Host(`mychatbot.programmerqhome.dev`)"
-    #   - "traefik.http.routers.openwebui.entrypoints=https"
-    #   - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
     environment:
       OLLAMA_BASE_URLS: http://ollama:11434
 
@@ -22,12 +15,7 @@ services:
     image: ollama/ollama:rocm
     container_name: mychatbot_ollama
     hostname: ollama
-    # networks:
-    #   - traefik-net
     ports:
       - "11434:11434"
     volumes:
       - ./ollama-local:/root/.ollama:z
-# networks:
-#   traefik-net:
-#     external: true
